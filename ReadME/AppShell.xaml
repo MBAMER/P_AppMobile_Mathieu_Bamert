@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ReadME.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ReadME"
+    xmlns:api="clr-namespace:ReadME"
+    Shell.FlyoutBehavior="Disabled"
+    Title="ReadME">
+
+    <TabBar>
+        <Tab Title="Home" >
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+
+        </Tab>
+        <Tab Title="Ouvrage">
+            <ShellContent ContentTemplate="{DataTemplate api:ApiPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>
