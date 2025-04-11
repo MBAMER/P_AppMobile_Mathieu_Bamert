@@ -17,7 +17,7 @@
             <ShellContent ContentTemplate="{DataTemplate api:ApiPage}" />
         </Tab>
         <Tab Title="Ajouter un ouvrage">
-            <ShellContent ContentTemplate="{DataTemplate api:ApiPage}" />
+            <ShellContent ContentTemplate="{DataTemplate api:AjouterOuvrage}" />
         </Tab>
     </TabBar>
 
