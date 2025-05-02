@@ -18,6 +18,8 @@
 
         <Label x:Name="title" Text="book title"></Label>
 
+        <Label Text="Mes ouvrages" HorizontalOptions="Center"></Label>
+
         <Image x:Name="cover" WidthRequest="150" HeightRequest="150" Source="book.png" />
     </VerticalStackLayout>
 </ContentPage>
