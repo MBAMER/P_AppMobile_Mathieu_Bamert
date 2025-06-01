@@ -1,0 +1,2 @@
+https://learn.microsoft.com/en-us/dotnet/maui/data-cloud/local-web-services?view=net-maui-8.0
+https://stackoverflow.com/questions/41936253/error-in-configuring-network-security-xml-in-android
