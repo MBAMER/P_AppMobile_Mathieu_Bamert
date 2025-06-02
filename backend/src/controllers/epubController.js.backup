@@ -1,0 +1,106 @@
+import { Router } from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs/promises";
+import AdmZip from "adm-zip";
+import { handleEpubFile, sendEpubResponse } from "../helper.js";
+import { Book } from "../db/sequelize.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Get EPUB file
+export const getEpub = async (req, res) => {
+  try {
+    const { bookId } = req.params;
+    console.log(`[getEpub] Requested bookId:`, bookId);
+    // Try to find the book in the database
+    const book = await Book.findByPk(bookId);
+    let epubPath;
+    if (book && book.epub && typeof book.epub === "string") {
+      console.log(`[getEpub] Book found. book.epub:`, book.epub);
+      // If the epub field is a string path, use it
+      epubPath = path.isAbsolute(book.epub)
+        ? book.epub
+        : path.join(__dirname, "../../", book.epub);
+      console.log(`[getEpub] Using epubPath from DB:`, epubPath);
+    } else {
+      // Fallback: try the old logic
+      epubPath = path.join(__dirname, "../../books", `${bookId}.epub`);
+      console.log(`[getEpub] Using fallback epubPath:`, epubPath);
+    }
+    try {
+      await fs.access(epubPath);
+      console.log(`[getEpub] EPUB file exists at:`, epubPath);
+    } catch {
+      console.log(`[getEpub] EPUB file NOT FOUND at:`, epubPath);
+      return res.status(404).json({ error: "EPUB file not found" });
+    }
+    try {
+      const { epub } = await handleEpubFile(epubPath, bookId);
+      sendEpubResponse(res, epub, bookId);
+      console.log(`[getEpub] EPUB file sent successfully.`);
+    } catch (error) {
+      console.log(`[getEpub] Failed to read EPUB file:`, error);
+      return res.status(500).json({ error: "Failed to read EPUB file." });
+    }
+  } catch (error) {
+    console.error("Error serving EPUB:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Upload EPUB file
+export const uploadEpub = async (req, res) => {
+  try {
+    if (!req.files || !req.files.epub) {
+      return res.status(400).json({ error: "No EPUB file uploaded" });
+    }
+
+    const epubFile = req.files.epub;
+    const bookId = req.body.bookId || Date.now().toString();
+
+    // MIME type check
+    if (
+      epubFile.mimetype !== "application/epub+zip" &&
+      epubFile.mimetype !== "application/octet-stream"
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Uploaded file is not an EPUB (bad MIME type)" });
+    }
+
+    // Ensure the books directory exists
+    const booksDir = path.join(__dirname, "../../books");
+    await fs.mkdir(booksDir, { recursive: true });
+
+    // Save the file
+    const epubPath = path.join(booksDir, `${bookId}.epub`);
+    await epubFile.mv(epubPath);
+
+    // Log file size
+    const stats = await fs.stat(epubPath);
+    console.log(`Uploaded file size: ${stats.size} bytes`);
+
+    // Verify the file is a valid ZIP (EPUB)
+    try {
+      const zip = new AdmZip(epubPath);
+      zip.getEntries(); // Will throw if not a valid zip
+    } catch (zipError) {
+      // Remove the corrupted file
+      await fs.unlink(epubPath);
+      return res
+        .status(400)
+        .json({ error: "Uploaded file is not a valid EPUB (ZIP) archive." });
+    }
+
+    res.status(200).json({
+      message: "EPUB uploaded successfully",
+      bookId: bookId,
+      fileSize: stats.size,
+    });
+  } catch (error) {
+    console.error("Error uploading EPUB:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
