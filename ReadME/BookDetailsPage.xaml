@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ReadME.Models"
+             x:Class="ReadME.BookDetailsPage"
+             Title="Détails du livre"
+             Shell.NavBarIsVisible="True"
+             BackgroundColor="#1E3A8A">
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="20">
+            <!-- Book Cover Image with a tilted frame -->
+            
+               
+
+            
+
+            <!-- Book Title and Author with gradient background -->
+            <Frame 
+                   CornerRadius="20"
+                   Padding="20"
+                   Margin="0,0,0,0">
+               
+                <VerticalStackLayout Spacing="10">
+                    <Label x:Name="BookTitle"
+                           Text="{Binding Book.Titre}"
+                           FontSize="30"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalOptions="Center" />
+                    
+                </VerticalStackLayout>
+            </Frame>
+
+            
+
+            <!-- Book Details Grid with a dark background -->
+            <Grid Padding="20"
+                  BackgroundColor="#172554"
+                  
+                  Margin="0,20,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+     
+                <Label Text="Éditeur:"
+                       Grid.Row="0" Grid.Column="0"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="#F97316" />
+                <Label Text="{Binding Book.Editeur}"
+                       Grid.Row="0" Grid.Column="1"
+                       FontSize="16"
+                       TextColor="#FFFFFF" />
+                <Label Text="Année d'édition:"
+                       Grid.Row="1" Grid.Column="0"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="#F97316" />
+                <Label Text="{Binding Book.AnneeEdition}"
+                       Grid.Row="1" Grid.Column="1"
+                       FontSize="16"
+                       TextColor="#FFFFFF" />
+                <Label Text="Nombre de pages:"
+                       Grid.Row="2" Grid.Column="0"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="#F97316" />
+                <Label Text="{Binding Book.NombreDePage}"
+                       Grid.Row="2" Grid.Column="1"
+                       FontSize="16"
+                       TextColor="#FFFFFF" />
+            </Grid>
+
+            <!-- Read EPUB Button with vibrant style -->
+            <Button x:Name="ReadEpubButton"
+                    Text="Lire l'EPUB"
+                    BackgroundColor="#F97316"
+                    TextColor="#FFFFFF"
+                    FontSize="18"
+                    CornerRadius="15"
+                    Padding="30,15"
+                    Margin="0,30,0,0"
+                    HorizontalOptions="Center"
+                    Clicked="OnReadEpubClicked">
+                
+            </Button>
+
+            <!-- Loading Indicator with dynamic styling -->
+            <StackLayout x:Name="LoadingIndicator"
+                         Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Margin="0,20,0,0"
+                         IsVisible="False">
+                <ActivityIndicator IsRunning="True" 
+                                   Color="#F97316"
+                                   WidthRequest="40"
+                                   HeightRequest="40" />
+                <Label Text="Téléchargement de l'EPUB..."
+                       VerticalOptions="Center"
+                       Margin="15,0,0,0"
+                       FontSize="16"
+                       TextColor="#FFFFFF" />
+            </StackLayout>
+
+            <!-- Back Button with a bold look -->
+            <Button Text="Retour au menu"
+                    HorizontalOptions="Center"
+                    Margin="0,30,0,20"
+                    BackgroundColor="#EF4444"
+                    TextColor="#FFFFFF"
+                    FontSize="18"
+                    CornerRadius="15"
+                    Padding="25,12"
+                    Clicked="OnBackButtonClicked">
+                
+            </Button>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

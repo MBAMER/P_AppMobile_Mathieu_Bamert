@@ -1,48 +1,97 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ReadME.MainPage">
-
+             x:Class="ReadME.MainPage"
+             BackgroundColor="#F5F5F0">
     <ScrollView>
-        <VerticalStackLayout>
-
-            <!-- PREMIER LABEL JUSTE SOUS L’IMAGE -->
-            <Label
-            Text="La lecture prend vie, partagez vos découvertes !"
-            FontSize="18"
-            Margin="0,25,0,0"
-            HorizontalOptions="Center"
-            Style="{StaticResource Headline}"
-            SemanticProperties.HeadingLevel="Level1" /> 
-            <!-- IMAGE SANS PADDING / SPACING -->
-            <Image
-            Source="livre_bot.png"
-            HeightRequest="200"
-            Aspect="AspectFit"
-            SemanticProperties.Description="Une bibliothèque avec des livres qui tombent" />
-
-            
-            <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+        <VerticalStackLayout Padding="25" Spacing="25">
 
 
-            <Label
-            Text="Bienvenue sur Lire &amp; Partager !&#10;&#10;Découvrez un espace dédié aux amoureux des livres ! Sur Lire &amp; Partager, vous pouvez explorer de nouveaux ouvrages, partager vos lectures préférées et interagir avec d'autres passionnés.&#10;&#10;Notre plateforme vous permet de découvrir, noter et commenter les livres que vous aimez, tout en contribuant à une communauté active de lecteurs."
-            Style="{StaticResource SubHeadline}"
-            FontSize="14"
-            LineBreakMode="WordWrap"
-            HorizontalTextAlignment="Center"
-            SemanticProperties.HeadingLevel="Level2"
-            SemanticProperties.Description="Bienvenue sur Lire et Partager, plateforme de lecture communautaire" />     
-
-
-
+            <!-- Welcome Image (First Book Cover or Default) -->
+            <Image 
+                   Source="{Binding FeaturedBooks[0].LienImage, FallbackValue='livre_bot.png'}"
+                   HeightRequest="250"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,15">
                 
+            </Image>
+         
+            <Label Text="La lecture prend vie, partagez vos découvertes !"
+                   FontSize="22"
+                   TextColor="#1E3A8A"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   LineBreakMode="WordWrap"
+                   Margin="0,0,0,10"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <!-- Welcome Description -->
+            <VerticalStackLayout Padding="20"                                                           
+                                Spacing="12">
+                
+                <Label Text="Bienvenue sur Lire et Partager !"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#1E293B"
+                       HorizontalOptions="Center" />
+                <Label Text="Découvrez un espace dédié aux amoureux des livres. Explorez de nouveaux ouvrages, partagez vos lectures et connectez-vous avec une communauté passionnée. Notez et commentez vos livres préférés."
+                       FontSize="15"
+                       TextColor="#6B7280"
+                       LineBreakMode="WordWrap"
+                       HorizontalTextAlignment="Center"
+                       SemanticProperties.Description="Bienvenue sur Lire et Partager, plateforme de lecture communautaire" />
             </VerticalStackLayout>
 
+            <!-- Featured Books Section -->
+            <Label Text="Livres en disponible"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#1E3A8A"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,15" />
+
+            <CollectionView x:Name="FeaturedBooksCollection"
+                           ItemsSource="{Binding FeaturedBooks}"
+                           ItemsLayout="VerticalList, 100"
+                           SelectionMode="None"
+                           Margin="0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="10"
+                               Padding="15"
+                               BackgroundColor="#FFFFFF"
+                               CornerRadius="15"
+                               HeightRequest="100">
+                           
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BookTappedCommand}"
+                                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
+                                <Label Text="{Binding Titre}"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="TailTruncation"
+                                       Grid.Row="0"
+                                       TextColor="#1E293B"
+                                       FontSize="16" />
+                                <Label Text="{Binding Editeur}"
+                                       FontSize="13"
+                                       TextColor="#6B7280"
+                                       LineBreakMode="TailTruncation"
+                                       Grid.Row="1" />
+                                <Label Text="{Binding AnneeEdition}"
+                                       FontSize="13"
+                                       TextColor="#6B7280"
+                                       LineBreakMode="TailTruncation"
+                                       Grid.Row="2" />
+                                
+                                
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
-
-
 </ContentPage>

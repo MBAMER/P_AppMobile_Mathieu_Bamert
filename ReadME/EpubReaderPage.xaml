@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReadME.EpubReaderPage"
+             Title="Lecteur EPUB"
+             BackgroundColor="#F0F4F8">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="15">
+        <!-- Top Toolbar -->
+        <Border Grid.Row="0" 
+                BackgroundColor="#FFFFFF" 
+                Padding="20"
+                Stroke="#D1D5DB"
+                StrokeThickness="1">
+
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                <Button x:Name="BackButton"
+                        Grid.Column="0"
+                        Text="← Retour"
+                        BackgroundColor="Transparent"
+                        TextColor="#1F2937"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        Padding="15,5"
+                        Clicked="OnBackClicked">
+                    
+                </Button>
+                <Label x:Name="BookTitleLabel"
+                       Grid.Column="1"
+                       Text="Chargement..."
+                       FontAttributes="Bold"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
+                
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1" Padding="10">
+            <!-- EPUB WebView -->
+            <WebView x:Name="EpubWebView"
+                     BackgroundColor="#FFFFFF" />
+
+            <!-- Table of Contents Overlay -->
+            <Frame x:Name="TocFrame"
+                   IsVisible="False"
+                   BackgroundColor="#FFFFFF"
+                   BorderColor="#D1D5DB"
+                   CornerRadius="15"
+                   Padding="25"
+                   Margin="20"
+                   VerticalOptions="Start"
+                   HorizontalOptions="End"
+                   WidthRequest="320"
+                   HeightRequest="450">
+        
+                <ScrollView>
+                    <StackLayout x:Name="TocContainer" Spacing="8" />
+                </ScrollView>
+            </Frame>
+
+            <!-- Font Size Overlay -->
+            <Frame x:Name="FontSizeFrame"
+                   IsVisible="False"
+                   BackgroundColor="#FFFFFF"
+                   BorderColor="#D1D5DB"
+                   CornerRadius="15"
+                   Padding="25"
+                   Margin="20"
+                   VerticalOptions="Start"
+                   HorizontalOptions="End"
+                   WidthRequest="280">
+
+
+            </Frame>
+
+            <!-- Loading Indicator -->
+            <Frame x:Name="LoadingFrame"
+                   IsVisible="True"
+                   BackgroundColor="#FFFFFF"
+                   BorderColor="#D1D5DB"
+                   CornerRadius="15"
+                   Padding="30"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center">
+                
+                <StackLayout Spacing="15">
+                    <ActivityIndicator IsRunning="True"
+                                       Color="#3B82F6"
+                                       WidthRequest="60"
+                                       HeightRequest="60" />
+                    <Label Text="Chargement du livre..."
+                           FontSize="16"
+                           TextColor="#1F2937"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+            </Frame>
+        </Grid>
+
+        <Border Grid.Row="2"
+        BackgroundColor="#FFFFFF"
+        Padding="20"
+        Stroke="#D1D5DB"
+        StrokeThickness="1">
+
+            <Grid ColumnDefinitions="Auto,*,Auto">
+            <Button x:Name="PreviousChapterButton"
+                Grid.Column="0"
+                Text="◀ Précédent"
+                BackgroundColor="Transparent"
+                TextColor="#1F2937"
+                FontSize="18"
+                FontAttributes="Bold"
+                Padding="15,8"
+                Clicked="OnPreviousChapter">
+            </Button>
+                <Label x:Name="ChapterInfoLabel"
+               Grid.Column="1"
+               Text=""
+               FontSize="18"
+               TextColor="#3B82F6"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               FontAttributes="Bold" />
+                <Button x:Name="NextChapterButton"
+                Grid.Column="2"
+                Text="Suivant ▶"
+                BackgroundColor="Transparent"
+                TextColor="#1F2937"
+                FontSize="18"
+                FontAttributes="Bold"
+                Padding="15,8"
+                Clicked="OnNextChapter">
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
